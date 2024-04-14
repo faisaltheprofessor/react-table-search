@@ -58,7 +58,7 @@ export default function SearchTable() {
             </div>
 
             <Table>
-                <TableCaption>A list of your recent invoices.</TableCaption>
+                <TableCaption>Employees</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Name</TableHead>
