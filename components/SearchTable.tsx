@@ -1,28 +1,40 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { employees } from './../app/data/people';
 import { Input } from './ui/input';
 
 export default function SearchTable() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm1, setSearchTerm1] = useState('');
+  const [searchTerm2, setSearchTerm2] = useState('');
 
-  const handleSearch = (event: any) => {
-    setSearchTerm(event.target.value);
+  const handleSearch1 = (event) => {
+    setSearchTerm1(event.target.value);
   };
 
-  const highlightText = (text: string) => {
-    if (!searchTerm) {
-      return text;
+  const handleSearch2 = (event) => {
+    setSearchTerm2(event.target.value);
+  };
+
+  const highlightText = (text) => {
+    let highlightedText = text;
+
+    if (searchTerm1) {
+      const regex1 = new RegExp(`(${searchTerm1.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      highlightedText = highlightedText.replace(regex1, (match) => `<span style="background-color: lightblue">${match}</span>`);
     }
-    const regex = new RegExp(`(${searchTerm})`, 'gi');
-    return text.split(regex).map((part, index) =>
-      regex.test(part) ? <span key={index} style={{ backgroundColor: 'lightblue' }}>{part}</span> : part
-    );
+
+    if (searchTerm2) {
+      const regex2 = new RegExp(`(${searchTerm2.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      highlightedText = highlightedText.replace(regex2, (match) => `<span style="background-color: lightgreen">${match}</span>`);
+    }
+
+    return <span dangerouslySetInnerHTML={{ __html: highlightedText }} />;
   };
 
   return (
     <>
-      <Input type="text" value={searchTerm} onChange={handleSearch} placeholder="Type to search..." />
+      <Input type="text" value={searchTerm1} onChange={handleSearch1} placeholder="Type to search (Color 1)..." />
+      <Input type="text" value={searchTerm2} onChange={handleSearch2} placeholder="Type to search (Color 2)..." />
 
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
